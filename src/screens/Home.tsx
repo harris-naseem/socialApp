@@ -27,7 +27,11 @@ const Home = () => {
 
   return (
     <SafeAreaView style={{backgroundColor: '#030712', flex: 1}}>
-      {isLoading && <ActivityIndicator color={'#fff'} size={40} />}
+      {isLoading && (
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <ActivityIndicator color={'#fff'} size={70} />
+        </View>
+      )}
       {!isLoading && (
         <View
           style={{
@@ -94,15 +98,3 @@ const Home = () => {
 };
 
 export default observer(Home);
-
-const styles = StyleSheet.create({
-  item: {
-    backgroundColor: '#f9c2ff',
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
-  },
-  title: {
-    fontSize: 32,
-  },
-});

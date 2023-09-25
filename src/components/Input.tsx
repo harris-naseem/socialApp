@@ -74,7 +74,7 @@ const Input = forwardRef(
             autoCorrect={false}
             autoFocus={autoFocus}
             secureTextEntry={hidePassword}
-            style={{color: '#000', flex: 1}}
+            style={{color: '#fff', flex: 1}}
             onSubmitEditing={onSubmitEditing}
           />
           {secure && (

@@ -36,7 +36,7 @@ const Signin = () => {
       const user = await loginUser(email, password);
       if (!user) throw new Error('No user found');
       setLoading(false);
-      navigation.navigate('TabNavigator');
+      navigation.replace('TabNavigator');
     } catch (err) {
       console.log(err);
       setLoading(false);
@@ -52,8 +52,10 @@ const Signin = () => {
       <Pressable onPress={Keyboard.dismiss} style={styles.loginSection}>
         <View style={styles.inputContainer}>
           <View style={{marginBottom: 20}}>
-            <Text>Login</Text>
-            <Text>Access your account</Text>
+            <Text style={{fontSize: 20, color: '#fff'}}>Login</Text>
+            <Text style={{fontSize: 20, color: '#fff'}}>
+              Access your account
+            </Text>
           </View>
           <Input
             ref={emailRef}
