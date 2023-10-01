@@ -50,21 +50,9 @@ const Input = forwardRef(
     );
 
     return (
-      <View style={{marginBottom: 20}}>
-        <View
-          style={[
-            style.inputContainer,
-            {
-              borderColor: '#375DD0',
-              alignItems: 'center',
-              backgroundColor: '#1f2937',
-            },
-          ]}>
-          <Icon
-            name={icon}
-            size={iconSize}
-            style={{color: '#375DD0', marginRight: 10}}
-          />
+      <View style={styles.container}>
+        <View style={styles.inputContainer}>
+          <Icon name={icon} size={iconSize} style={styles.iconLeft} />
           <TextInput
             ref={inputRef}
             value={value}
@@ -74,14 +62,14 @@ const Input = forwardRef(
             autoCorrect={false}
             autoFocus={autoFocus}
             secureTextEntry={hidePassword}
-            style={{color: '#fff', flex: 1}}
+            style={styles.textInput}
             onSubmitEditing={onSubmitEditing}
           />
           {secure && (
             <Icon
               onPress={() => setHidePassword(!hidePassword)}
               name={!hidePassword ? 'eye-outline' : 'eye-off-outline'}
-              style={{color: '#375DD0', fontSize: 22}}
+              style={styles.iconRight}
             />
           )}
         </View>
@@ -90,15 +78,21 @@ const Input = forwardRef(
   },
 );
 
-const style = StyleSheet.create({
+const styles = StyleSheet.create({
   inputContainer: {
     height: 50,
-    backgroundColor: '#fff',
     flexDirection: 'row',
     paddingHorizontal: 10,
     borderWidth: 1,
     borderRadius: 4,
+    borderColor: '#375DD0',
+    alignItems: 'center',
+    backgroundColor: '#1f2937',
   },
+  container: {marginBottom: 20},
+  iconLeft: {color: '#375DD0', marginRight: 10},
+  iconRight: {color: '#375DD0', fontSize: 22},
+  textInput: {color: '#fff', flex: 1},
 });
 
 export default Input;

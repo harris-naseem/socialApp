@@ -1,5 +1,6 @@
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import React from 'react';
 export const getTabIconName = (route: string, focused: boolean, color: any) => {
   switch (route) {
     case 'Home':

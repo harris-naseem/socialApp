@@ -13,49 +13,38 @@ import {
 } from 'react-native';
 
 import Input from '../components/Input';
+import {SignInScreenProps} from '../../types';
 
 const Signin = () => {
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation<SignInScreenProps>();
 
-  const [email, setEmail] = useState('');
-
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
 
   const emailRef = useRef<TextInput | null>(null);
   const passwordRef = useRef<TextInput | null>(null);
 
   const [loading, setLoading] = useState(false);
 
-  const loginUser = useCallback((email: string, password: string) => {
-    return true;
-  }, []);
-
   const login = useCallback(async () => {
     try {
-      setLoading(true);
-      const user = await loginUser(email, password);
-      if (!user) throw new Error('No user found');
-      setLoading(false);
       navigation.replace('TabNavigator');
     } catch (err) {
-      console.log(err);
       setLoading(false);
     }
-  }, [email, loginUser, navigation, password]);
+  }, [navigation]);
 
   return (
     <KeyboardAvoidingView
       behavior={'padding'}
       style={styles.container}
       collapsable
-      contentContainerStyle={{flex: 1}}>
+      contentContainerStyle={styles.contentContainer}>
       <Pressable onPress={Keyboard.dismiss} style={styles.loginSection}>
         <View style={styles.inputContainer}>
-          <View style={{marginBottom: 20}}>
-            <Text style={{fontSize: 20, color: '#fff'}}>Login</Text>
-            <Text style={{fontSize: 20, color: '#fff'}}>
-              Access your account
-            </Text>
+          <View style={styles.textSection}>
+            <Text style={styles.loginText}>Login</Text>
+            <Text style={styles.loginAccountText}>Access your account</Text>
           </View>
           <Input
             ref={emailRef}
@@ -80,7 +69,7 @@ const Signin = () => {
             {loading ? (
               <ActivityIndicator size={20} color={'#fff'} />
             ) : (
-              <Text style={{color: '#fff'}}>Login</Text>
+              <Text style={styles.btnText}>Login</Text>
             )}
           </Pressable>
         </View>
@@ -96,6 +85,21 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#030712',
   },
+
+  contentContainer: {
+    flex: 1,
+  },
+
+  textSection: {marginBottom: 20},
+
+  loginText: {
+    fontSize: 20,
+    color: '#fff',
+  },
+
+  loginAccountText: {fontSize: 20, color: '#fff'},
+
+  btnText: {color: '#fff'},
 
   loginSection: {
     flex: 1,

@@ -1,17 +1,20 @@
-import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {observer} from 'mobx-react-lite';
-import store from '../../store';
+import {StyleSheet, Text, View} from 'react-native';
+
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 const Settings = () => {
   return (
-    <SafeAreaView style={{backgroundColor: '#030712', flex: 1}}>
-      <Text style={{color: '#fff'}}>Settings</Text>
+    <SafeAreaView style={styles.container}>
+      <Text style={styles.text}>Settings</Text>
     </SafeAreaView>
   );
 };
 
-export default observer(Settings);
+export default Settings;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {backgroundColor: '#030712', flex: 1},
+  text: {color: '#fff'},
+});

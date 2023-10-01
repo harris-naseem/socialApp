@@ -1,5 +1,6 @@
-import {View, Text} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import React from 'react';
 
 type IconButtonProps = {
   icon: React.ComponentProps<typeof EvilIcons>['name'];
@@ -8,11 +9,16 @@ type IconButtonProps = {
 
 const IconButton = ({icon, text}: IconButtonProps) => {
   return (
-    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+    <View style={styles.container}>
       <EvilIcons name={icon} size={22} color="gray" />
-      <Text style={{fontSize: 12, color: 'gray'}}>{text}</Text>
+      <Text style={styles.text}>{text}</Text>
     </View>
   );
 };
 
 export default IconButton;
+
+const styles = StyleSheet.create({
+  container: {flexDirection: 'row', alignItems: 'center'},
+  text: {fontSize: 12, color: 'gray'},
+});

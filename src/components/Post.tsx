@@ -6,39 +6,45 @@ import {
   Pressable,
   Dimensions,
 } from 'react-native';
+import moment from 'moment';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import Video from 'react-native-video';
-import React, {useRef} from 'react';
 import Entypo from 'react-native-vector-icons/Entypo';
 
 import IconButton from './IconButton';
 import {MediaType, Post as PostType} from '../../types';
-import moment from 'moment';
+import store from '../../store';
+import {observer} from 'mobx-react-lite';
 
 const aspectRatio = 0.95;
-const screenWidth = Dimensions.get('window').width;
+const screenWidth = Dimensions.get('screen').width;
 
-const itemWidth = screenWidth * 0.9;
+const itemWidth = screenWidth;
 const itemHeight = itemWidth / aspectRatio;
 
 type PostProps = {
   post: PostType;
-  inview: string | null;
 };
 
-const Post = ({post, inview}: PostProps) => {
+const logoSource = {
+  uri: 'https://reactnative.dev/img/tiny_logo.png',
+};
+
+const Post = observer(({post}: PostProps) => {
   const videoRef = useRef<Video | null>(null);
+
+  const {selectedItem} = store;
+
+  const inView = useMemo(
+    () => selectedItem === post.id,
+    [post.id, selectedItem],
+  );
 
   return (
     <Pressable style={[styles.container]}>
       <View style={styles.mainContainer}>
-        <View
-          style={{flexDirection: 'row', alignItems: 'center', columnGap: 6}}>
-          <Image
-            source={{
-              uri: 'https://reactnative.dev/img/tiny_logo.png',
-            }}
-            style={styles.userImage}
-          />
+        <View style={styles.headerContainer}>
+          <Image source={logoSource} style={styles.userImage} />
           <Text style={styles.username}>@Haris</Text>
           <Text style={styles.date}>
             {moment(post.publishedAt).format('MMM YY')}
@@ -47,7 +53,7 @@ const Post = ({post, inview}: PostProps) => {
             name="dots-three-horizontal"
             size={16}
             color="gray"
-            style={{marginLeft: 'auto'}}
+            style={styles.headerLeftIcon}
           />
         </View>
 
@@ -55,7 +61,7 @@ const Post = ({post, inview}: PostProps) => {
           {post.textCaption}
         </Text>
 
-        {post?.contentMeta[0].type === MediaType.IMAGE && (
+        {post?.contentMeta[0]?.type === MediaType.IMAGE && (
           <Image
             source={{
               uri: post.contentMeta[0].fileId,
@@ -64,19 +70,28 @@ const Post = ({post, inview}: PostProps) => {
           />
         )}
 
-        {post?.contentMeta[0].type === MediaType.VIDEO && (
-          <Video
-            source={{
-              uri: post.contentMeta[0].fileId,
-            }}
-            style={styles.video}
-            controls={true}
-            ref={videoRef}
-            paused={inview === post.id ? false : true}
-            muted={true}
-            repeat={true}
-          />
-        )}
+        {post?.contentMeta[0]?.type === MediaType.VIDEO ? (
+          inView ? (
+            <Video
+              source={{
+                uri: post.contentMeta[0].fileId,
+              }}
+              style={styles.video}
+              controls={true}
+              ref={videoRef}
+              paused={!inView}
+              muted={true}
+              repeat={true}
+            />
+          ) : (
+            <Image
+              source={{
+                uri: post?.thumbnail,
+              }}
+              style={styles.image}
+            />
+          )
+        ) : null}
 
         <View style={styles.footer}>
           <IconButton icon="comment" text={post?.numOfComments} />
@@ -86,7 +101,7 @@ const Post = ({post, inview}: PostProps) => {
       </View>
     </Pressable>
   );
-};
+});
 
 const styles = StyleSheet.create({
   container: {
@@ -100,6 +115,9 @@ const styles = StyleSheet.create({
     height: itemHeight,
     marginVertical: 10,
   },
+  headerContainer: {flexDirection: 'row', alignItems: 'center', columnGap: 6},
+  headerLeftIcon: {marginLeft: 'auto'},
+
   userImage: {
     width: 50,
     height: 50,
